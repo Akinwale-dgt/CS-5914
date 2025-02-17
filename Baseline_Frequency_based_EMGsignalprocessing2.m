@@ -1,5 +1,9 @@
 
+%% Start measuring Execution Time
+execution_start = tic;
 
+
+%%
 % EMG signal preprocessing
 
 % Denoting channels
@@ -147,3 +151,23 @@ disp(mean_freq_normalized);
 
 disp('Median Frequency (Hz) per Channel (Normalized):');
 disp(median_freq_normalized);
+
+
+
+%% Measure Execution Time
+elapsedTime = toc(execution_start);  % End the timer
+
+%% Measure Memory Usage
+memoryUsage = memory;  % Get memory usage after running the script
+
+%% Compute FLOPs
+num_samples = size(emg_channels, 1);
+filt_operations = num_samples * num_channels * (length(b) + 1); % Filtering operations
+fft_operations = num_samples * log2(num_samples) * num_channels; % FFT operations
+flops_total = filt_operations + fft_operations;
+
+
+%% Print Performance Metrics
+fprintf('Execution Time: %.4f seconds\n', elapsedTime);
+fprintf('Total Memory Used: %.4f MB\n', memoryUsage.MemUsedMATLAB / 1e6);
+disp(['Estimated FLOPs: ', num2str(flops_total)]);
